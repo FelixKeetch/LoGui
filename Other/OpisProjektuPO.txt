@@ -1,0 +1,20 @@
+LocalGuide
+
+Końcowym wynikiem tego projektu będzie RESTful API dla strony internetowej LocalGuide. 
+W tym celu planuję użyć języków Java, MySQL i framework SpringBoot. Po ukończeniu tego
+projektu będzie dostępny w pełni funkcjonaly back-end, który potrafi zapisać, odczytać 
+dane i zwrócić na front-end. 
+
+Pomysł projektu przyszedł do głowy na spacerze w moim miescie, gdy poznałem kilku 
+Amerykanów, którzy nie chcieli oglądać kościoły lub zabytki, wabiły ich niezwykłe miejsca,
+kawiarnie i restauracje, miejsca które odwiedzają mieszkańcy tego miasta. Stałem dla 
+nich miejscowym przewodnikiem, lub LocalGuide'em. Tak i powstał pomysł na ten projekt,
+strona internetowa, gdzie turyści mogą znaleźć bezpłatnego przewodnika, który lub która
+w zamian otrzyma dobrą praktykę języka ocego i, opcjonalne, poczestunek od turystów, jak 
+naprzykład upominek z kraju zwiedzającego lub obiad w restauracji.
+
+W przyszłości namierzam stworzyć stronę internetową dla użycia tego API. 
+
+Denys Lukeniuk. 
+
+
