@@ -20,10 +20,4 @@ public class LanguageController {
     public Set<Language> getAllLanguages(){
         return languageService.getAllLanguages();
     }
-    @PostMapping("lang")
-    public void addLanguage(@RequestBody Language lang){
-        languageService.addLanguage(lang);
-    }
-
-
 }

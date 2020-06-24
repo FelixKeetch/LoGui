@@ -31,11 +31,11 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @RequestMapping("users/langs")
-    public Set<User> getUsersByLanguages(@RequestParam List<String> searchlangs){
-        Set<Language> langs = languageService.getLanguages(searchlangs);
-        return userService.getUsersByLanguages(langs);
-    }
+//    @RequestMapping("users/langs")
+//    public Set<User> getUsersByLanguages(@RequestParam List<String> searchlangs){
+//        Set<Language> langs = languageService.getLanguages(searchlangs);
+//        return userService.getUsersByLanguages(langs);
+//    }
 
     @PostMapping("users")
     public void addUser(@RequestBody User user){

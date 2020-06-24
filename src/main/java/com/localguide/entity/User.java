@@ -22,17 +22,18 @@ public class User {
     private String      firstname;
     private String      lastname;
     private Date        birthdate;
+
     @ManyToMany
     @JoinTable(
             name               = "user_hobby",
             joinColumns        = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "hobby_id"))
     private Set<Hobby> hobbies = new HashSet<>();
-    @ManyToMany
-    @JoinTable(
-            name               = "user_language",
-            joinColumns        = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "language_id"))
+
+    @OneToMany( targetEntity = City.class,
+                cascade      = CascadeType.ALL,
+                fetch        = FetchType.LAZY,
+                orphanRemoval = true)
     private Set<Language> languages = new HashSet<>();
 
 // TODO  private Set<Roles>  roles;
