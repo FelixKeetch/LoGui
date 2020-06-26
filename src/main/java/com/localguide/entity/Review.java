@@ -2,6 +2,7 @@ package com.localguide.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -19,6 +20,4 @@ public class Review {
 
     private String text;
 
-    @OneToOne(mappedBy = "review")
-    private Trip trip;
 }

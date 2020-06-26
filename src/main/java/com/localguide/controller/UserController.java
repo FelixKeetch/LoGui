@@ -1,16 +1,12 @@
 package com.localguide.controller;
 
-import com.localguide.entity.Language;
-import com.localguide.entity.User;
+import com.localguide.entity.*;
 import com.localguide.service.LanguageService;
 import com.localguide.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class UserController {
@@ -22,7 +18,7 @@ public class UserController {
     private LanguageService languageService;
 
     @RequestMapping("users")
-    public Set<User> getUsers(){
+    public HashSet<User> getUsers(){
         return userService.getAllUsers();
     }
 
@@ -31,11 +27,11 @@ public class UserController {
         return userService.getUser(id);
     }
 
-//    @RequestMapping("users/langs")
-//    public Set<User> getUsersByLanguages(@RequestParam List<String> searchlangs){
-//        Set<Language> langs = languageService.getLanguages(searchlangs);
-//        return userService.getUsersByLanguages(langs);
-//    }
+    @RequestMapping("users/byLangs")
+    public HashSet<User> getUsersByLanguages(@RequestParam("lang") String[] langs){
+        HashSet<LanguageEnum> searchlangs = languageService.getLanguages(langs);
+        return userService.getUsersByLanguages(searchlangs);
+    }
 
     @PostMapping("users")
     public void addUser(@RequestBody User user){
@@ -49,4 +45,14 @@ public class UserController {
     public void deleteUser(@RequestBody User user){
         userService.deleteUser(user);
     }
+
+    @PostMapping("users/{id}/addLang")
+    public void addLangs(@RequestParam("lang") String[] langs, @PathVariable Long id){
+        userService.addLanguages(id,langs);
+    }
+    @PostMapping("users/{id}/trips/addTrip")
+    public void addTrip(@RequestBody Trip trip, @PathVariable Long id, @RequestParam TGRole role){
+        userService.addTrip(id, trip, role);
+    }
+
 }

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -16,7 +18,7 @@ public class CountryController {
     private CountryService countryService;
 
     @RequestMapping("country")
-    public Set<Country> getAllCountries(){
+    public HashSet<Country> getAllCountries(){
            return countryService.getAllCountries();
     }
 

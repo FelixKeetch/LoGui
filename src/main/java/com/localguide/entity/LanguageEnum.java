@@ -1,5 +1,5 @@
 package com.localguide.entity;
 
-public enum Language {
+public enum LanguageEnum {
     ENGLISH, POLISH, RUSSIAN, GERMAN, SPANISH, FRENCH, FINNISH
 }

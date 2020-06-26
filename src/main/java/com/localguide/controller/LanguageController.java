@@ -1,14 +1,12 @@
 package com.localguide.controller;
-
-import com.localguide.entity.Language;
+import com.localguide.entity.LanguageEnum;
 import com.localguide.service.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 @RestController
 public class LanguageController {
@@ -17,7 +15,7 @@ public class LanguageController {
     private LanguageService languageService;
 
     @RequestMapping("lang")
-    public Set<Language> getAllLanguages(){
+    public HashSet<LanguageEnum> getAllLanguages(){
         return languageService.getAllLanguages();
     }
 }

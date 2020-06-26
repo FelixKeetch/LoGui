@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class CountryService {
@@ -15,8 +14,8 @@ public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
-    public Set<Country> getAllCountries(){
-        Set<Country> countries = new HashSet<>();
+    public HashSet<Country> getAllCountries(){
+        HashSet<Country> countries = new HashSet<>();
         countryRepository.findAll().forEach(countries::add);
         return countries;
     }

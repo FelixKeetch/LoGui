@@ -12,6 +12,7 @@ import java.sql.Date;
 @Setter
 
 public class Trip {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,5 +22,5 @@ public class Hobby {
     private String name;
 
     @ManyToMany(mappedBy = "hobbies")
-    private Set<User> passionates  = new HashSet<>();
+    private List<User> passionates  = new ArrayList<>();
 }

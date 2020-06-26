@@ -1,0 +1,126 @@
+LocalGuide - Dokumentacja, Denys Lukeniuk
+
+Projekt Używa Java 11, Spring Boot, bazę danych MySQL. Dla testowania użyto applikacji Postman(API Client)
+Aby połaczyć się z bazą danych należy ustawić odpowiadjące parametry(username i password) w src/main/recources/application.properties
+
+1. Package Entity 
+	Ten package zawiera entity dla tworzenia tablic w bazie danych.
+	
+	a) User. Ma standardowe pola email, password, firstname i tak dalej, również ma miejscowość, w której mieszka (City),
+     	zbiór wycieczek uprowadzonych(Hashset<Trip> guideTrips), zbiór wycieczek jako turysta(Hashset<Trip> touristTrips),
+		zbiór języków, którymi potrafi posługiwać się(Hashset<LanguageEnum> languages), i zbiór hobby(Hashset<Hobby>  hobbies).
+	b) Trip. Ma datę, guide'a, tourist'a i review - opinię turysty o wycieczce.
+	c) Review. Zawiera tekst opinii. 
+	d) TGROLE. Enum zawierający typy kont: tourist, guide lub both.  
+	e) LanguageEnum. Enum zawierający kilka języków do wyboru.
+	f) Hobby. Zawiera nazwę, i listę user'ow - pasjonatów.
+	g) Country. Zawiera nazwę oraz zbiór miast(HashSet City cities). 
+	h) City. Zawiera nazwę oraz zbiór User'ow mieszkających w tej miejscowości(Hashset<User> inhabitats).
+	
+2. Package Dao
+	Ten package odpowiada za pracę z bazą danych, otrzymanie użytkowników, wycieczek, itd. Wszystkie one extend JPARepository.
+	a)UserRepository.
+		public HashSet<User> findAllByCity(City city); 								//Zwróci wszystkich użytkowników mieszkających w miejscowości city
+		public HashSet<User> findAllByLanguagesIn(HashSet<LanguageEnum> languages);	//Zwróci użytkowników, którzy mają język należący do languages
+	b)TripRepository.
+	c)ReviewRepository
+	d)HobbyRepository
+	e)CityRepository
+	f)CountryRepository
+
+3. Package Service
+	Ten package służy do obsługiwania requestów z Controller. Każdy service ma zrobione dependency injection @Autowired
+	tego Repository, którego one obsługują. 
+	a) UserService :
+		public HashSet<User> getAllUsers(); 									//Zwraca wszystkich User'ow
+		public HashSet<User> getUsersByLanguages(HashSet<LanguageEnum> langs); // Zwraca wsyzstkich User'ów, którzy znają przynajmniej 1 język w langs.
+		public void addUser(User newUser); 										//Dodaje User'a 
+		public Optional<User> getUser(Long id); 				//Zwraca User'a o takim id, Optional pomaga nam, jeżeli nie znajdziemy User'a o takim id. 
+		public void updateUser(User updateUser); 				//Robi update User'a 
+		public void deleteUser(User deleteUser); 				//Usuwa User'a
+		public void addLanguages(Long id, String[] langs); 		//Dodaje wszystkie języki z langs do User'a o id id. 
+		public void addTrip(Long id, Trip trip, TGRole role); 	//Dodaje nową wycieczkę, ustala rolę User'a w tej wycieczce.
+	b) TripService : 
+		public Set<Trip> getAllTrips();					//Zwraca wszystkie Wycieczki z bazy danych
+		public void addTrip(Trip newTrip);				//Dodaje nową wycieczkę newTrip
+		public Optional<Trip> getTrip(Long id);			//Zwraca Wycieczkę
+        public void updateTrip(Trip updateTrip);		//Robi update Trip
+		public void deleteTrip(Trip deleteTrip);		//Usuwa Trip
+		public void addReview(Long id, Review review); 	//Dodaje opinię do wycieczki
+	c) ReviewService 
+		public Set<Review> getAllReviews();				//Zwraca wszystkie opinie Reviews
+		public void addReview(Review newReview);		//Dodaje nową opinię newReview
+		public Optional<Review> getReview(Long id);		//Zwraca Review
+		public void updateReview(Review updateReview);	//Robi update Review
+		public void deleteReview(Review deleteReview);	//Usuwa Review
+	d) LanguageService
+		public HashSet<LanguageEnum> getAllLanguages(); 					//Zwraca wszystkie języki
+		public HashSet<LanguageEnum> getLanguages(String[] searchlangs);	//Zwraca języki(HashSet<LanguageEnum>) wymienione w searchlangs.
+	e) HobbyService		
+		public Set<Hobby> getAllHobbies();				//Zwraca wszystkie Hobby
+		public void addHobby(Hobby newHobby);			//Dodaje nowe Hobby newHobby
+		public Optional<Hobby> getHobby(Long id);		//Zwraca Hobby o danym id
+		public void updateHobby(Hobby updateHobby);		//Robi update Hobby
+		public void deleteHobby(Hobby deleteHobby);		//Usuwa Hobby
+	f) CityService		
+		public Set<City> getAllCities();				//Zwraca wszystkie City
+		public void addCity(City newCity);			//Dodaje nowe City newCity
+		public Optional<City> getCity(Long id);		//Zwraca City o danym id
+		public void updateCity(City updateCity);		//Robi update City
+		public void deleteCity(City deleteCity);		//Usuwa City
+	g) CountryService		
+		public Set<Country> getAllCountries();				//Zwraca wszystkie Country
+		public void addCountry(Country newCountry);			//Dodaje nowe Country newCountry
+		public Optional<Country> getCountry(Long id);		//Zwraca Country o danym id
+		public void updateCountry(Country updateCountry);	//Robi update Country
+		public void deleteCountry(Country deleteCountry);	//Usuwa Country
+4. Package Controller
+	Ten package służy do obsługiwania http requestów. 
+	a) UserController
+		@RequestMapping("users")
+		public HashSet<User> getUsers(); //getUsers() w UserService;
+
+		@RequestMapping("users/{id}")   
+		public Optional<User> getUser(@PathVariable Long id); //getUser() w UserService;
+        
+		@RequestMapping("users/byLangs")
+		public HashSet<User> getUsersByLanguages(@RequestParam("lang") String[] langs); // getUsersByLanguages() w UserService
+		
+		@PostMapping("users")
+		public void addUser(@RequestBody User user); // addUser() w UserService
+		
+		@PutMapping("users/{id}")
+		public void updateUser(@RequestBody User user, @PathVariable Long id); // updateUser() w UserService
+		
+		@DeleteMapping("users")
+		public void deleteUser(@RequestBody User user); // deleteUser() w User Service
+		
+		@PostMapping("users/{id}/addLang")
+		public void addLangs(@RequestParam("lang") String[] langs, @PathVariable Long id); // addLanguages() w UserService;
+		
+		@PostMapping("users/{id}/trips/addTrip")
+		public void addTrip(@RequestBody Trip trip, @PathVariable Long id, @RequestParam TGRole role); // addTrip() w UserService;
+	b) TripController
+		
+		@GetMapping("trips")
+		public Set<Trip> getAllTrips(); //getAllTrips w TripService
+		
+		@PostMapping("trips/{id}/addReview")
+		public void addReview(@PathVariable Long id, @RequestBody Review review); //addReview w TripService;
+	c) LanguageController 
+		
+		@RequestMapping("lang")
+		public HashSet<LanguageEnum> getAllLanguages(); //getAllLanguages w LanguageService
+	d) CountryController	
+		
+		@RequestMapping("country")
+		public HashSet<Country> getAllCountries(); // getAllCountries() w CountryController
+    
+		@PostMapping("country")
+		public void addCountry(@RequestBody Country country); // addCountry() w CountryController;
+		
+		
+		
+		
+		
+		

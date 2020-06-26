@@ -1,27 +1,30 @@
 package com.localguide.service;
 
+import com.localguide.dao.TripRepository;
 import com.localguide.dao.UserRepository;
-import com.localguide.entity.Language;
+import com.localguide.entity.LanguageEnum;
+import com.localguide.entity.TGRole;
+import com.localguide.entity.Trip;
 import com.localguide.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    public Set<User> getAllUsers(){
-        Set<User> usrs = new HashSet<>();
+    @Autowired
+    private LanguageService languageService;
+    
+    public HashSet<User> getAllUsers(){
+        HashSet<User> usrs = new HashSet<>();
         userRepository.findAll().forEach(usrs::add);
         return usrs;
     }
-    public Set<User> getUsersByLanguages(Set<Language> langs){
+    public HashSet<User> getUsersByLanguages(HashSet<LanguageEnum> langs){
         return userRepository.findAllByLanguagesIn(langs);
     }
 
@@ -39,5 +42,23 @@ public class UserService {
     public void deleteUser(User deleteUser){
         userRepository.delete(deleteUser);
     }
+
+    public void addLanguages(Long id, String[] langs) {
+        User user = userRepository.getOne(id);
+        HashSet<LanguageEnum> langSet = languageService.getLanguages(langs);
+        user.setLanguages(langSet);
+        userRepository.save(user);
+    }
+
+    public void addTrip(Long id, Trip trip, TGRole role) {
+        User user = userRepository.getOne(id);
+        if(role.equals(TGRole.GUIDE))
+            user.getGuideTrips().add(trip);
+        else
+            user.getTouristTrips().add(trip);
+        userRepository.save(user);
+    }
+
+
 
 }
